@@ -30,6 +30,244 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+
+    <!-- Custom Gallery Styles -->
+    <style>
+        .project-card {
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .project-thumbnail {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .project-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .project-card:hover .project-thumbnail img {
+            transform: scale(1.05);
+        }
+        
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(199,155,73,0.8), rgba(199,155,73,0.6));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+        
+        .view-gallery-btn {
+            background: #fff;
+            color: var(--primary);
+            border: none;
+            padding: 12px 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .view-gallery-btn:hover {
+            background: var(--primary);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        
+        .project-info {
+            padding: 25px;
+        }
+        
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .project-location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .image-count {
+            background: var(--primary);
+            color: #fff;
+            padding: 5px 12px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
+        
+        /* Modal Styles */
+        .gallery-modal .modal-dialog {
+            max-width: 90vw;
+            margin: 30px auto;
+        }
+        
+        .gallery-modal .modal-content {
+            border: none;
+        }
+        
+        .gallery-modal .modal-header {
+            background: var(--light);
+            border-bottom: 1px solid #eee;
+        }
+        
+        .gallery-modal .modal-title {
+            color: var(--dark);
+            font-weight: 600;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(199,155,73,0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        /* Lightbox Styles */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+        
+        .lightbox-content {
+            position: relative;
+            margin: auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .lightbox img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .lightbox-close:hover {
+            color: var(--primary);
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(199,155,73,0.3);
+            color: #fff;
+            border: none;
+            padding: 15px 20px;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .lightbox-nav:hover {
+            background: var(--primary);
+        }
+        
+        .lightbox-prev {
+            left: 20px;
+        }
+        
+        .lightbox-next {
+            right: 20px;
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .project-thumbnail {
+                height: 200px;
+            }
+            
+            .project-info {
+                padding: 20px;
+            }
+            
+            .project-title {
+                font-size: 1.1rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .gallery-item img {
+                height: 150px;
+            }
+            
+            .lightbox-nav {
+                padding: 10px 15px;
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -107,78 +345,490 @@
 
 
      <!-- Project Start -->
-<div class="container-xxl project py-5">
-    <div class="container">
-        <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
-            <h4 class="section-title">Our Projects</h4>
-            <h1 class="display-5 mb-4">Visit Our Latest Projects And Our Innovative Works</h1>
-        </div>
-        <div class="row g-4 wow fadeInUp" data-wow-delay="0.3s">
-            <div class="col-lg-4">
-                <div class="nav nav-pills d-flex justify-content-between w-100 h-100 me-4">
-                   <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4 active" data-bs-toggle="pill" data-bs-target="#tab-pane-1" type="button">
-                        <h3 class="m-0">01. Al-Bunayat Private Villa</h3>
-                    </button>
-                    <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-2" type="button">
-                        <h3 class="m-0">02. New Badr Private Villa</h3>
-                    </button>
-                    <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-4" data-bs-toggle="pill" data-bs-target="#tab-pane-3" type="button">
-                        <h3 class="m-0">03. Al-Hummar Private Villa</h3>
-                    </button>
-                    <button class="nav-link w-100 d-flex align-items-center text-start p-4 mb-0" data-bs-toggle="pill" data-bs-target="#tab-pane-4" type="button">
-                        <h3 class="m-0">04. Riyadh Villa Redesign</h3>
-                    </button>
+    <div class="container-xxl project py-5">
+        <div class="container">
+            <div class="text-center mx-auto mb-5 wow fadeInUp" data-wow-delay="0.1s" style="max-width: 600px;">
+                <h4 class="section-title">Our Projects</h4>
+                <h1 class="display-5 mb-4">Visit Our Latest Projects And Our Innovative Works</h1>
+            </div>
+            
+            <div class="row g-4">
+                 <!-- Project 1 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project1/4.jpg" alt="International Head Office">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project1')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">International Head Office</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>6 Images</span>
+                        </div>
+                    </div>
+                </div>
 
+                 <!-- Project 2 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project2/1.jpg" alt="Private Resort">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project2')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Resort</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>3 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 3 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project3/1.jpg" alt="Redesign & Renovation Private Villa">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project3')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Redesign & Renovation Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>4 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 4 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project4/1.jpg" alt="Pro Main Cars Maintenance Company">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project4')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Pro Main Cars Maintenance Company</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>6 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 5 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project5/1.jpg" alt="Roshan Front Landscape">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project5')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Roshan Front Landscape</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>5 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+                 <!-- Icon Projects  -->
+                  <!-- 1  -->
+                 <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/iconprojects/1/257.jpg" alt="Luxury Villa Compound – Riyadh, 2023 (BUA: 9,400 m², Land: 50,000 m²)">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('projectIcon1')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Luxury Villa Compound – Riyadh, 2023 (BUA: 9,400 m², Land: 50,000 m²)</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>8 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <!-- 2  -->
+                 <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/iconprojects/2/313.jpg" alt="Luxury Villa Compound – Riyadh, 2023 (BUA: 4,495 m², Land: 26,905 m², Design Stage)">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('projectIcon2')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Luxury Villa Compound – Riyadh, 2023 (BUA: 4,495 m², Land: 26,905 m², Design Stage)</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>4 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <!-- 3  -->
+                 <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/iconprojects/3/330.jpg" alt="Luxury Villa Compound – Riyadh, 2023 (BUA: 6,400 m², Land: 41,000 m², Design Stage)">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('projectIcon3')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Luxury Villa Compound – Riyadh, 2023 (BUA: 6,400 m², Land: 41,000 m², Design Stage)</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>4 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <!-- 4  -->
+                 <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/iconprojects/4/408.jpg" alt="Landscape – DR. IBRAHIM Al AGIL Family, Riyadh">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('projectIcon4')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Landscape – DR. IBRAHIM Al AGIL Family, Riyadh</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>7 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                 <!-- 5  -->
+                 <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/iconprojects/5/421.jpg" alt="Landscape – DR. IBRAHIM Al AGIL Family, Riyadh">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('projectIcon5')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Landscape – DR. IBRAHIM Al AGIL Family, Riyadh</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Riyadh</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>8 Images</span>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Icon Projects End  -->
+
+
+                 <!-- Project 6 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project6/1.jpg" alt="Tlaa Al-Ali Hospital">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project6')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Tlaa Al-Ali Hospital</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Amman</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>6 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 7 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project7/1.jpg" alt="Bab Amman Primary School">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project7')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Bab Amman Primary School</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Amman</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>3 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 8 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project8/1.jpg" alt="Private Villa - Amman">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project8')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Amman</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>7 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 9 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project9/1.jpg" alt="Private Villa - Irbid">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project9')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Irbid</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>2 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 10 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project10/1.jpg" alt="Private Villa Construction & Finishing">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project10')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa Construction & Finishing</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>New Bader</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>5 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 11 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project11/11.jpg" alt="Private Villa - Al-Bunayat">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project11')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Al-Bunayat</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>7 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 12 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project12/2.jpg" alt="Private Villa - Marj Al-Hamam">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project12')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Marj Al-Hamam</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>2 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 13 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.1s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project13/1.jpg" alt="Private Villa - Shafa Badran">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project13')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Shafa Badran</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>2 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 14 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.2s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project14/1.jpg" alt="Private Villa - Naour">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project14')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Naour</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>3 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 15 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.3s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project15/1.jpg" alt="Private Villa - Al-Bunayat">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project15')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Al-Bunayat</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>2 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 16 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.4s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project16/1.jpg" alt="Private Villa - Jerash">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project16')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Private Villa</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Jerash</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>1 Image</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 17 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project17/1.jpg" alt="Housing Project - Al-Bunayat">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project17')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Housing Project</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Al-Bunayat</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>2 Images</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Project 18 -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="project-card wow fadeInUp" data-wow-delay="0.6s">
+                        <div class="project-thumbnail">
+                            <img src="img/projects/project18/1.jpg" alt="Chalet Structural & Finishes">
+                            <div class="project-overlay">
+                                <button class="view-gallery-btn" onclick="openGallery('project18')">
+                                    <i class="fas fa-images me-2"></i>View Gallery
+                                </button>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Chalet Structural & Finishes</h3>
+                            <p class="project-location"><i class="fas fa-map-marker-alt me-2"></i>Jerash</p>
+                            <span class="image-count"><i class="fas fa-camera me-1"></i>5 Images</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-8">
-                <div class="tab-content w-100">
-                    <div class="tab-pane fade show active" id="tab-pane-1">
-                        <div class="row g-4">
-                            <div class="col-md-12" style="min-height: 450px;">
-                                <div class="position-relative h-100">
-                                    <img class="position-absolute img-fluid w-100 h-100" src="img/project-1.jpg"
-                                        style="object-fit: cover;" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="tab-pane-2">
-                        <div class="row g-4">
-                            <div class="col-md-12" style="min-height: 450px;">
-                                <div class="position-relative h-100">
-                                    <img class="position-absolute img-fluid w-100 h-100" src="img/project-2.jpg"
-                                        style="object-fit: cover;" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="tab-pane-3">
-                        <div class="row g-4">
-                            <div class="col-md-12" style="min-height: 450px;">
-                                <div class="position-relative h-100">
-                                    <img class="position-absolute img-fluid w-100 h-100" src="img/project-3.jpg"
-                                        style="object-fit: cover;" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="tab-pane-4">
-                        <div class="row g-4">
-                            <div class="col-md-12" style="min-height: 450px;">
-                                <div class="position-relative h-100">
-                                    <img class="position-absolute img-fluid w-100 h-100" src="img/project-4.jpg"
-                                        style="object-fit: cover;" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> <!-- tab-content -->
-            </div> <!-- col-lg-8 -->
         </div>
     </div>
-</div>
-<!-- Project End -->
+     <!-- Project End -->
+
+     <!-- Gallery Modal -->
+    <div class="modal fade gallery-modal" id="galleryModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="galleryModalTitle">Project Gallery</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="gallery-grid" id="galleryGrid">
+                         <!-- Images will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <span class="lightbox-close">&times;</span>
+            <button class="lightbox-nav lightbox-prev">&#10094;</button>
+            <img id="lightbox-img" src="/placeholder.svg" alt="">
+            <button class="lightbox-nav lightbox-next">&#10095;</button>
+        </div>
+    </div>
 
         
 
@@ -262,6 +912,181 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+    <!-- Added custom gallery JavaScript -->
+    <script>
+        // Project data with all images
+        const projectData = {
+            project1: {
+                title: "International Head Office – Riyadh",
+                images: ["img/projects/project1/2.jpg", "img/projects/project1/3.jpg", "img/projects/project1/4.jpg", "img/projects/project1/6.jpg", "img/projects/project1/7.jpg", "img/projects/project1/8.jpg"]
+            },
+            project2: {
+                title: "Private Resort – Riyadh",
+                images: ["img/projects/project2/1.jpg", "img/projects/project2/2.jpg", "img/projects/project2/3.jpg"]
+            },
+            project3: {
+                title: "Redesign & Renovation Private Villa – Riyadh",
+                images: ["img/projects/project3/1.jpg", "img/projects/project3/2.jpg", "img/projects/project3/3.jpg", "img/projects/project3/4.jpg"]
+            },
+            project4: {
+                title: "Pro Main Cars Maintenance Company – Riyadh",
+                images: ["img/projects/project4/1.jpg", "img/projects/project4/2.jpg", "img/projects/project4/3.jpg", "img/projects/project4/4.jpg", "img/projects/project4/5.jpg", "img/projects/project4/6.jpg"]
+            },
+            project5: {
+                title: "Roshan Front Landscape – Riyadh",
+                images: ["img/projects/project5/1.jpg", "img/projects/project5/2.jpg", "img/projects/project5/4.jpg", "img/projects/project5/5.jpg", "img/projects/project5/8.jpg"]
+            },
+            //icon projects
+            projectIcon1: {
+                title: "Luxury Villa Compound – Riyadh, 2023 (BUA: 9,400 m², Land: 50,000 m²)",
+                images: ["img/projects/iconprojects/1/257.jpg", "img/projects/iconprojects/1/258.jpg", "img/projects/iconprojects/1/259.jpg", "img/projects/iconprojects/1/260.jpg", "img/projects/iconprojects/1/261.jpg", "img/projects/iconprojects/1/262.jpg","img/projects/iconprojects/1/269.jpg","img/projects/iconprojects/1/268.jpg"]
+            },
+            projectIcon2: {
+                title: "Luxury Villa Compound – Riyadh, 2023 (BUA: 4,495 m², Land: 26,905 m², Design Stage)",
+                images: ["img/projects/iconprojects/2/313.jpg", "img/projects/iconprojects/2/315.jpg", "img/projects/iconprojects/2/317.jpg", "img/projects/iconprojects/2/323.jpg"]
+            },
+            projectIcon3: {
+                title: "Luxury Villa Compound – Riyadh, 2023 (BUA: 6,400 m², Land: 41,000 m², Design Stage)",
+                images: ["img/projects/iconprojects/3/330.jpg", "img/projects/iconprojects/3/331.jpg", "img/projects/iconprojects/3/332.jpg", "img/projects/iconprojects/3/333.jpg"]
+            },
+            projectIcon4: {
+                title: "Landscape – DR. IBRAHIM Al AGIL Family, Riyadh",
+                images: ["img/projects/iconprojects/4/408.jpg", "img/projects/iconprojects/4/409.jpg.", "img/projects/iconprojects/4/410.jpg", "img/projects/iconprojects/4/411.jpg", "img/projects/iconprojects/4/412.jpg", "img/projects/iconprojects/4/413.jpg","img/projects/iconprojects/4/414.jpg"]
+            },
+            projectIcon5: {
+                 title: "Landscape – DR. IBRAHIM Al AGIL Family, Riyadh",
+                images: ["img/projects/iconprojects/5/421.jpg", "img/projects/iconprojects/5/422.jpg", "img/projects/iconprojects/5/423.jpg", "img/projects/iconprojects/5/424.jpg", "img/projects/iconprojects/5/425.jpg", "img/projects/iconprojects/5/426.jpg","img/projects/iconprojects/5/428.jpg","img/projects/iconprojects/5/429.jpg"]
+             },
+            //icon projects end
+            project6: {
+                title: "Tlaa Al-Ali Hospital – Amman",
+                images: ["img/projects/project6/1.jpg", "img/projects/project6/2.jpg", "img/projects/project6/3.jpg", "img/projects/project6/4.jpg", "img/projects/project6/5.jpg", "img/projects/project6/6.jpg"]
+            },
+            project7: {
+                title: "Bab Amman Primary School – Amman",
+                images: ["img/projects/project7/1.jpg", "img/projects/project7/2.jpg", "img/projects/project7/3.jpg"]
+            },
+            project8: {
+                title: "Private Villa – Amman",
+                images: ["img/projects/project8/1.jpg", "img/projects/project8/2.jpg", "img/projects/project8/3.jpg", "img/projects/project8/4.jpg", "img/projects/project8/6.jpg", "img/projects/project8/7.jpg", "img/projects/project18/8.jpg"]
+            },
+            project9: {
+                title: "Private Villa – Irbid",
+                images: ["img/projects/project9/1.jpg", "img/projects/project9/2.jpg"]
+            },
+            project10: {
+                title: "Private Villa Construction & Finishing – New Bader",
+                images: ["img/projects/project10/1.jpg", "img/projects/project10/2.jpg", "img/projects/project10/3.jpg", "img/projects/project10/4.jpg", "img/projects/project10/5.jpg"]
+            },
+            project11: {
+                title: "Private Villa – Al-Bunayat",
+                images: ["img/projects/project11/11.jpg", "img/projects/project11/2.jpg", "img/projects/project11/3.jpg", "img/projects/project11/4.jpg", "img/projects/project11/5.jpg", "img/projects/project11/10.jpg", "img/projects/project11/12.jpg"]
+            },
+            project12: {
+                title: "Private Villa – Marj Al-Hamam",
+                images: ["img/projects/project12/2.jpg", "img/projects/project12/3.jpg"]
+            },
+            project13: {
+                title: "Private Villa – Shafa Badran",
+                images: ["img/projects/project13/1.jpg", "img/projects/project13/2.jpg"]
+            },
+            project14: {
+                title: "Private Villa – Naour",
+                images: ["img/projects/project14/1.jpg", "img/projects/project14/2.jpg", "img/projects/project14/3.jpg"]
+            },
+            project15: {
+                title: "Private Villa – Al-Bunayat",
+                images: ["img/projects/project15/1.jpg", "img/projects/project15/2.jpg"]
+            },
+            project16: {
+                title: "Private Villa – Jerash",
+                images: ["img/projects/project16/1.jpg"]
+            },
+            project17: {
+                title: "Housing Project – Al-Bunayat",
+                images: ["img/projects/project17/1.jpg", "img/projects/project17/2.jpg"]
+            },
+            project18: {
+                title: "Chalet Structural & Finishes – Jerash",
+                images: ["img/projects/project18/1.jpg", "img/projects/project18/2.jpg", "img/projects/project18/3.jpg", "img/projects/project18/4.jpg", "img/projects/project18/5.jpg"]
+            }
+        };
+
+        let currentImages = [];
+        let currentImageIndex = 0;
+
+        // Open gallery modal
+        function openGallery(projectId) {
+            const project = projectData[projectId];
+            if (!project) return;
+
+            document.getElementById('galleryModalTitle').textContent = project.title;
+            const galleryGrid = document.getElementById('galleryGrid');
+            galleryGrid.innerHTML = '';
+
+            project.images.forEach((imageSrc, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `<img src="${imageSrc}" alt="${project.title}" onclick="openLightbox('${projectId}', ${index})">`;
+                galleryGrid.appendChild(galleryItem);
+            });
+
+            const modal = new bootstrap.Modal(document.getElementById('galleryModal'));
+            modal.show();
+        }
+
+        // Open lightbox
+        function openLightbox(projectId, imageIndex) {
+            const project = projectData[projectId];
+            if (!project) return;
+
+            currentImages = project.images;
+            currentImageIndex = imageIndex;
+            
+            document.getElementById('lightbox-img').src = currentImages[currentImageIndex];
+            document.getElementById('lightbox').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close lightbox
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Navigate lightbox
+        function navigateLightbox(direction) {
+            if (direction === 'next') {
+                currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+            } else {
+                currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+            }
+            document.getElementById('lightbox-img').src = currentImages[currentImageIndex];
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Close lightbox
+            document.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+            document.getElementById('lightbox').addEventListener('click', function(e) {
+                if (e.target === this) closeLightbox();
+            });
+
+            // Navigate lightbox
+            document.querySelector('.lightbox-next').addEventListener('click', () => navigateLightbox('next'));
+            document.querySelector('.lightbox-prev').addEventListener('click', () => navigateLightbox('prev'));
+
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (document.getElementById('lightbox').style.display === 'block') {
+                    if (e.key === 'Escape') closeLightbox();
+                    if (e.key === 'ArrowRight') navigateLightbox('next');
+                    if (e.key === 'ArrowLeft') navigateLightbox('prev');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
