@@ -150,37 +150,37 @@
        <!-- Contact Form -->
 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
     <p class="mb-4">Feel free to send us a message using the form below. We'll get back to you as soon as possible.</p>
-    <form action="https://formspree.io/f/mpwjlykd" method="POST">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
-                    <label for="name">Your Name</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-floating">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
-                    <label for="email">Your Email</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
-                    <label for="subject">Subject</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-floating">
-                    <textarea class="form-control" id="message" name="message" placeholder="Leave a message here" style="height: 100px" required></textarea>
-                    <label for="message">Message</label>
-                </div>
-            </div>
-            <div class="col-12">
-                <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
-            </div>
-        </div>
-    </form>
+   <form id="contactForm">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
+        <label for="name">Your Name</label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-floating">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" required>
+        <label for="email">Your Email</label>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="subject" name="subject" placeholder="Subject">
+        <label for="subject">Subject</label>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="form-floating">
+        <textarea class="form-control" id="message" name="message" placeholder="Leave a message here" style="height: 100px" required></textarea>
+        <label for="message">Message</label>
+      </div>
+    </div>
+    <div class="col-12">
+      <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+    </div>
+  </div>
+</form>
 </div>
 
 
@@ -274,6 +274,33 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script>const form = document.getElementById('contactForm');
+const successMessage = document.getElementById('successMessage');
+
+form.addEventListener('submit', function(e) {
+  e.preventDefault(); // Prevent the default form submission
+  const data = new FormData(form);
+
+  fetch('https://formspree.io/f/mpwjlykd', {
+    method: 'POST',
+    body: data,
+    headers: {
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      successMessage.style.display = 'block'; // Show success message
+      form.reset(); // Clear the form fields
+    } else {
+      alert("An error occurred while sending your message. Please try again.");
+    }
+  })
+  .catch(error => {
+    alert("An error occurred. Please check your internet connection.");
+  });
+});
+</script>
 </body>
 
 </html>
